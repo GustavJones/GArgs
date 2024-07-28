@@ -14,13 +14,7 @@ ArgumentsParser::ArgumentsParser(const std::string &program_title,
 
 ArgumentsParser::~ArgumentsParser() {}
 
-void ArgumentsParser::AddFlag(const FlagKey &flag) {
-  m_structure.AddFlag(flag);
-}
-
-void ArgumentsParser::AddCommand(const CommandKey &command) {
-  m_structure.AddCommand(command);
-}
+void ArgumentsParser::AddKey(const Key &key) { m_structure.AddKey(key); }
 
 void ArgumentsParser::DisplayHelp() {
   std::cout << m_structure.HelpMessage(m_name, m_version) << std::endl;

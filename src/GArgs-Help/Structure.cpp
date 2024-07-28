@@ -50,20 +50,13 @@ std::string Structure::HelpMessage(const std::string &title,
 
   // Display Argument Structure
   for (const auto &argument : *this) {
-    switch (argument->type) {
-    case GArgs::ArgumentTypes::Command:
-      output += '[' + argument->name + ']' + ' ';
-      break;
-    case GArgs::ArgumentTypes::PositionalArg:
-      output += '(' + argument->name + ')' + ' ';
-      break;
-    case GArgs::ArgumentTypes::Flag:
-      output += '<' + argument->name + '>' + ' ';
-      break;
-    }
+    output += '[' + argument->name + ']' + ' ';
   }
 
   output += '\n';
+  output += '\n';
+
+  output += "Structure: \n";
 
   // Display Argument Structure Help
   for (const auto &argument : *this) {
@@ -71,32 +64,22 @@ std::string Structure::HelpMessage(const std::string &title,
   }
 
   output += '\n';
+  output += '\n';
 
   for (const auto &argument : *this) {
-    if (argument->type == GArgs::ArgumentTypes::Flag) {
-      output += argument->name + ": \n";
-      for (const auto &flagKey : m_flags) {
-        if (flagKey.parent == argument->name) {
-          output += flagKey.flag + ": " + flagKey.help + '\n';
-        }
-      }
-    } else if (argument->type == GArgs::ArgumentTypes::Command) {
-      output += argument->name + ": \n";
-      for (const auto &argumentKey : m_commands) {
-        if (argumentKey.parent == argument->name) {
-          output += argumentKey.cmd + ": " + argumentKey.help + '\n';
-        }
+    output += argument->name + ": \n";
+    for (const auto &key : m_keys) {
+      if (key.parent == argument->name) {
+        output += key.key + " : " + key.help + '\n';
       }
     }
+    output += '\n';
   }
 
   return output;
 }
 
-void Structure::AddFlag(const FlagKey &flag) { m_flags.push_back(flag); }
-void Structure::AddCommand(const CommandKey &command) {
-  m_commands.push_back(command);
-}
+void Structure::AddKey(const Key &key) { m_keys.push_back(key); }
 
 /// Parse Argument Structure line from structure string
 void Structure::_ParseStructureArgument(
@@ -157,7 +140,6 @@ void Structure::_AddArgumentToStructure(
     const std::string &argument_name,
     const std::vector<std::pair<std::string, std::string>>
         &argument_properties) {
-  GArgs::ArgumentTypes argumentType = GArgs::ArgumentTypes::PositionalArg;
   bool required = true;
   std::string help;
   std::string argumentFilter;
@@ -166,13 +148,7 @@ void Structure::_AddArgumentToStructure(
   GArgs::Argument *argument = new GArgs::Argument;
 
   for (const auto &property : argument_properties) {
-    if (property.first == "type") {
-      if (property.second == "cmd") {
-        argumentType = GArgs::ArgumentTypes::Command;
-      } else if (property.second == "pos_arg") {
-        argumentType = GArgs::ArgumentTypes::PositionalArg;
-      }
-    } else if (property.first == "help") {
+    if (property.first == "help") {
       help = property.second;
     } else if (property.first == "required") {
       std::string requiredStr;
@@ -192,7 +168,6 @@ void Structure::_AddArgumentToStructure(
     }
   }
 
-  argument->type = argumentType;
   argument->name = argument_name;
   argument->help = help;
   argument->required = required;

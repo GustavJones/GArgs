@@ -1,6 +1,5 @@
 #include "GArgs-Core/ArgumentsException.hpp"
-#include "GArgs-Help/CommandKey.hpp"
-#include "GArgs-Help/FlagKey.hpp"
+#include "GArgs-Help/Key.hpp"
 #include "GArgs-Parser/ArgumentsParser.hpp"
 #include <iostream>
 
@@ -12,8 +11,8 @@ int main(int argc, char *argv[]) {
                         "Argument;argument2:help=The "
                         "Second Argument]");
 
-    parser.AddFlag(GArgs::FlagKey("flags", "help", "Prints This message"));
-    parser.AddCommand(GArgs::CommandKey("argument1", "run", "Runs a file"));
+    parser.AddKey(GArgs::Key("flags", "help", "Prints This message"));
+    parser.AddKey(GArgs::Key("argument1", "run", "Runs a file"));
 
     parser.ParseArgs(argc, argv);
 
