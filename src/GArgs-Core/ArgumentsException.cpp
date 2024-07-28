@@ -1,4 +1,4 @@
-#include "GArgs/ArgumentsException.hpp"
+#include "GArgs-Core/ArgumentsException.hpp"
 #include <stdexcept>
 
 namespace GArgs {
