@@ -1,6 +1,7 @@
-#include "GArgs/Structure.hpp"
-#include "GArgs/ArgumentsException.hpp"
+#include "GArgs-Help/Structure.hpp"
+#include "GArgs-Core/ArgumentsException.hpp"
 #include <cctype>
+#include <string>
 
 namespace GArgs {
 Structure::Structure() {}
@@ -30,7 +31,7 @@ void Structure::Parse(const std::string &structure_str) {
     if (structure_str[iterator] == ';' || iterator == parseEndIndex) {
       _ParseStructureArgument(argument, argumentName, argumentProperties);
 
-      _HandleStructureArgument(argumentName, argumentProperties);
+      _AddArgumentToStructure(argumentName, argumentProperties);
 
       argument = "";
       iterator++;
@@ -39,6 +40,62 @@ void Structure::Parse(const std::string &structure_str) {
     argument += structure_str[iterator];
     iterator++;
   }
+}
+
+std::string Structure::HelpMessage(const std::string &title,
+                                   const std::string &version) {
+  std::string output;
+
+  output += title + ' ' + version + '\n';
+
+  // Display Argument Structure
+  for (const auto &argument : *this) {
+    switch (argument->type) {
+    case GArgs::ArgumentTypes::Command:
+      output += '[' + argument->name + ']' + ' ';
+      break;
+    case GArgs::ArgumentTypes::PositionalArg:
+      output += '(' + argument->name + ')' + ' ';
+      break;
+    case GArgs::ArgumentTypes::Flag:
+      output += '<' + argument->name + '>' + ' ';
+      break;
+    }
+  }
+
+  output += '\n';
+
+  // Display Argument Structure Help
+  for (const auto &argument : *this) {
+    output += argument->name + ": " + argument->help + '\n';
+  }
+
+  output += '\n';
+
+  for (const auto &argument : *this) {
+    if (argument->type == GArgs::ArgumentTypes::Flag) {
+      output += argument->name + ": \n";
+      for (const auto &flagKey : m_flags) {
+        if (flagKey.parent == argument->name) {
+          output += flagKey.flag + ": " + flagKey.help + '\n';
+        }
+      }
+    } else if (argument->type == GArgs::ArgumentTypes::Command) {
+      output += argument->name + ": \n";
+      for (const auto &argumentKey : m_commands) {
+        if (argumentKey.parent == argument->name) {
+          output += argumentKey.cmd + ": " + argumentKey.help + '\n';
+        }
+      }
+    }
+  }
+
+  return output;
+}
+
+void Structure::AddFlag(const FlagKey &flag) { m_flags.push_back(flag); }
+void Structure::AddCommand(const CommandKey &command) {
+  m_commands.push_back(command);
 }
 
 /// Parse Argument Structure line from structure string
@@ -96,13 +153,15 @@ void Structure::_ParseStructureProperty(const std::string &property_str,
   }
 }
 
-void Structure::_HandleStructureArgument(
+void Structure::_AddArgumentToStructure(
     const std::string &argument_name,
     const std::vector<std::pair<std::string, std::string>>
         &argument_properties) {
   GArgs::ArgumentTypes argumentType = GArgs::ArgumentTypes::PositionalArg;
   bool required = true;
   std::string help;
+  std::string argumentFilter;
+  unsigned int valueAmount = 1;
 
   GArgs::Argument *argument = new GArgs::Argument;
 
@@ -126,6 +185,10 @@ void Structure::_HandleStructureArgument(
       } else {
         required = true;
       }
+    } else if (property.first == "argument_filter") {
+      argumentFilter = property.second;
+    } else if (property.first == "value_amount") {
+      valueAmount = std::stoi(property.second);
     }
   }
 
@@ -133,6 +196,8 @@ void Structure::_HandleStructureArgument(
   argument->name = argument_name;
   argument->help = help;
   argument->required = required;
+  argument->argumentFilter = argumentFilter;
+  argument->valueAmount = valueAmount;
 
   this->push_back(argument);
 }

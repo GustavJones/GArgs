@@ -5,6 +5,7 @@
 namespace GArgs {
 
 enum ArgumentTypes {
+  Flag,
   Command,
   PositionalArg,
 };
@@ -16,6 +17,8 @@ public:
   std::string name;
   std::string help;
   std::string value;
+  std::string argumentFilter;
+  unsigned int valueAmount;
 
   ArgumentTypes type;
 

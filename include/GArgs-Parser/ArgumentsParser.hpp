@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GArgs/CommandKey.hpp"
-#include "GArgs/FlagKey.hpp"
-#include "GArgs/Structure.hpp"
+#include "GArgs-Help/CommandKey.hpp"
+#include "GArgs-Help/FlagKey.hpp"
+#include "GArgs-Help/Structure.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -28,11 +28,10 @@ public:
   void AddFlag(const FlagKey &flag);
   void AddCommand(const CommandKey &command);
 
-  bool IsFlagActive(const std::string &flag);
+  bool Contains(const std::string &key, const std::string &value);
 
 private:
   Structure m_structure;
-  std::vector<std::string> m_activeFlags;
 
   std::vector<FlagKey> m_flags;
   std::vector<CommandKey> m_commands;

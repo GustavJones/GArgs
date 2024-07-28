@@ -18,15 +18,6 @@ To add a structure, use `void add_structure(const std::string &structure_str)` m
 
 ## Properties
 
-`type`:
-
-The type of argument added
-
-default: pos_arg
-
-- cmd
-- pos_arg
-
 `help`:
 
 The help string for argument position
@@ -35,6 +26,25 @@ default: ""
 
 - Any String
 
-### Examples
+`value_amount`:
 
-`.add_structure("[ProgramFunction:type=cmd]")`
+Amount of arguments for the group
+
+- unsigned integer
+- default=1
+- for infinate arguments use 0 (must also set argument_filter)
+
+`argument_filter`:
+
+Set the filter of what characters the argument value must begin with
+
+- String
+- Default=Unset
+- Set "--" for flag filter
+
+`required`:
+
+Sets the priority of the argument
+
+- Bool
+- Default=true
