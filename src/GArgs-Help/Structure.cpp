@@ -56,7 +56,7 @@ std::string Structure::HelpMessage(const std::string &title,
   output += '\n';
   output += '\n';
 
-  output += "Structure: \n";]
+  output += "Structure: \n";
 
   // Display Argument Structure Help
   for (const auto &argument : *this) {
@@ -73,7 +73,7 @@ std::string Structure::HelpMessage(const std::string &title,
         output += key.key + " : " + key.help + '\n';
       }
     }
-    output += '\n';]
+    output += '\n';
   }
 
   return output;
@@ -149,7 +149,7 @@ void Structure::_AddArgumentToStructure(
   GArgs::Argument *argument = new GArgs::Argument;
 
   for (const auto &property : argument_properties) {
-    if (property.first == "help") {\
+    if (property.first == "help") {
       help = property.second;
     } else if (property.first == "required") {
       std::string requiredStr;
