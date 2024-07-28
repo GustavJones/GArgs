@@ -18,8 +18,8 @@ public:
   ArgumentsParser &operator=(const ArgumentsParser &) = default;
   ~ArgumentsParser();
 
-  Structure &AddStructure(const std::string &structure_str);
-  Structure &ClearStructure();
+  const Structure &AddStructure(const std::string &structure_str);
+  const Structure &ClearStructure();
 
   void ParseArgs(int argc, char *argv[]);
 

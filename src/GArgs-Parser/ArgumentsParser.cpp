@@ -26,13 +26,14 @@ void ArgumentsParser::DisplayHelp() {
   std::cout << m_structure.HelpMessage(m_name, m_version) << std::endl;
 }
 
-Structure &ArgumentsParser::AddStructure(const std::string &structure_str) {
+const Structure &
+ArgumentsParser::AddStructure(const std::string &structure_str) {
   m_structure.Parse(structure_str);
   _UpdateParserMap();
   return m_structure;
 }
 
-Structure &ArgumentsParser::ClearStructure() {
+const Structure &ArgumentsParser::ClearStructure() {
   for (auto &item : m_structure) {
     delete item;
   }
