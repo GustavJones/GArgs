@@ -13,26 +13,20 @@ ArgumentsParser::ArgumentsParser(const std::string &program_title,
       m_allowRelative(allow_relative_path) {}
 
 ArgumentsParser::~ArgumentsParser() {}
-
-void ArgumentsParser::AddFlag(const FlagKey &flag) {
-  m_structure.AddFlag(flag);
-}
-
-void ArgumentsParser::AddCommand(const CommandKey &command) {
-  m_structure.AddCommand(command);
-}
-
+  
+void ArgumentsParser::AddKey(const Key &key) { m_structure.AddKey(key); }
 void ArgumentsParser::DisplayHelp() {
   std::cout << m_structure.HelpMessage(m_name, m_version) << std::endl;
 }
 
-Structure &ArgumentsParser::AddStructure(const std::string &structure_str) {
+const Structure &
+ArgumentsParser::AddStructure(const std::string &structure_str) {\
   m_structure.Parse(structure_str);
   _UpdateParserMap();
   return m_structure;
 }
 
-Structure &ArgumentsParser::ClearStructure() {
+const Structure &ArgumentsParser::ClearStructure() {\
   for (auto &item : m_structure) {
     delete item;
   }

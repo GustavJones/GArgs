@@ -1,7 +1,6 @@
 #pragma once
 
-#include "GArgs-Help/CommandKey.hpp"
-#include "GArgs-Help/FlagKey.hpp"
+#include "GArgs-Help/Key.hpp"
 #include "GArgs-Help/Structure.hpp"
 #include <map>
 #include <string>
@@ -18,23 +17,16 @@ public:
   ArgumentsParser &operator=(const ArgumentsParser &) = default;
   ~ArgumentsParser();
 
-  Structure &AddStructure(const std::string &structure_str);
-  Structure &ClearStructure();
+  const Structure &AddStructure(const std::string &structure_str);
+  const Structure &ClearStructure();
 
   void ParseArgs(int argc, char *argv[]);
-
   void DisplayHelp();
-
-  void AddFlag(const FlagKey &flag);
-  void AddCommand(const CommandKey &command);
-
+  void AddKey(const Key &key);
   bool Contains(const std::string &key, const std::string &value);
 
 private:
   Structure m_structure;
-
-  std::vector<FlagKey> m_flags;
-  std::vector<CommandKey> m_commands;
 
   std::string m_name;
   std::string m_version;

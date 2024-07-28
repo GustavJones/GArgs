@@ -1,8 +1,7 @@
 #pragma once
 
 #include "GArgs-Help/Argument.hpp"
-#include "GArgs-Help/CommandKey.hpp"
-#include "GArgs-Help/FlagKey.hpp"
+#include "GArgs-Help/Key.hpp"
 #include <vector>
 
 namespace GArgs {
@@ -18,8 +17,7 @@ public:
   void Parse(const std::string &structure_str);
   std::string HelpMessage(const std::string &title, const std::string &version);
 
-  void AddFlag(const FlagKey &flag);
-  void AddCommand(const CommandKey &command);
+  void AddKey(const Key &key);
 
 private:
   void _ParseStructureArgument(
@@ -36,7 +34,6 @@ private:
                               &argument_properties);
 
 private:
-  std::vector<FlagKey> m_flags;
-  std::vector<CommandKey> m_commands;
+  std::vector<GArgs::Key> m_keys;
 };
 } // namespace GArgs
