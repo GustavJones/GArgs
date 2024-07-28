@@ -21,17 +21,12 @@ public:
   const Structure &ClearStructure();
 
   void ParseArgs(int argc, char *argv[]);
-
   void DisplayHelp();
-
   void AddKey(const Key &key);
-
   bool Contains(const std::string &key, const std::string &value);
 
 private:
   Structure m_structure;
-
-  std::vector<Key> m_flags;
 
   std::string m_name;
   std::string m_version;

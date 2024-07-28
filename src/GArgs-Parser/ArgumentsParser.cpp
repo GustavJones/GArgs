@@ -13,21 +13,20 @@ ArgumentsParser::ArgumentsParser(const std::string &program_title,
       m_allowRelative(allow_relative_path) {}
 
 ArgumentsParser::~ArgumentsParser() {}
-
+  
 void ArgumentsParser::AddKey(const Key &key) { m_structure.AddKey(key); }
-
 void ArgumentsParser::DisplayHelp() {
   std::cout << m_structure.HelpMessage(m_name, m_version) << std::endl;
 }
 
 const Structure &
-ArgumentsParser::AddStructure(const std::string &structure_str) {
+ArgumentsParser::AddStructure(const std::string &structure_str) {\
   m_structure.Parse(structure_str);
   _UpdateParserMap();
   return m_structure;
 }
 
-const Structure &ArgumentsParser::ClearStructure() {
+const Structure &ArgumentsParser::ClearStructure() {\
   for (auto &item : m_structure) {
     delete item;
   }
