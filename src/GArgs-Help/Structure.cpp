@@ -48,6 +48,8 @@ std::string Structure::HelpMessage(const std::string &title,
 
   output += title + ' ' + version + '\n';
 
+  output += title + ' ';
+
   // Display Argument Structure
   for (const auto &argument : *this) {
     output += '[' + argument->name + ']' + ' ';
