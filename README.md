@@ -43,8 +43,29 @@ Set the filter of what characters the argument value must begin with
 - Set "--" for flag filter
 
 `required`:
-
+NOT IMPLEMENTED
 Sets the priority of the argument
 
 - Bool
 - Default=true
+
+## Usage
+
+```cpp
+    #include "GArgs.hpp"
+
+    GArgs::ArgumentsParser parser("ApplicationName", "V1.0");
+    parser.AddStructure("[argument1:help=Arg 1;argument2:help=Arg 2]");
+
+    parser.AddKey(GArgs::Key("argument1", "help", "Prints This message"));
+    parser.AddKey(GArgs::Key("argument2", "*", "Runs a file"));
+
+    parser.ParseArgs(argc, argv);
+
+    std::cout << parser["argument2"] << std::endl;
+
+    if (parser.Contains("argument1", "help")) {
+      parser.DisplayHelp();
+    }
+
+```
