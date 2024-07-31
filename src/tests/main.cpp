@@ -1,10 +1,8 @@
-#include "GArgs-Core/ArgumentsException.hpp"
-#include "GArgs-Help/Key.hpp"
-#include "GArgs-Parser/ArgumentsParser.hpp"
+#include "GArgs.hpp"
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  GArgs::ArgumentsParser parser("Parser", "V1.0", true);
+  GArgs::Parser parser("Parser", "V1.0", true);
   try {
     parser.AddStructure("[flags:help=Flags,value_amount=0,argument_filter=--;"
                         "argument1:help=The First "
