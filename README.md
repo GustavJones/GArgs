@@ -54,7 +54,7 @@ Sets the priority of the argument
 ```cpp
     #include "GArgs.hpp"
 
-    GArgs::ArgumentsParser parser("ApplicationName", "V1.0");
+    GArgs::Parser parser("ApplicationName", "V1.0"); // ArgumentParser can also be used
     parser.AddStructure("[argument1:help=Arg 1;argument2:help=Arg 2]");
 
     parser.AddKey(GArgs::Key("argument1", "help", "Prints This message"));
