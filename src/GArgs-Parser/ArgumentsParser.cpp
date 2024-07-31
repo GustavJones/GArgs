@@ -13,20 +13,20 @@ ArgumentsParser::ArgumentsParser(const std::string &program_title,
       m_allowRelative(allow_relative_path) {}
 
 ArgumentsParser::~ArgumentsParser() {}
-  
+
 void ArgumentsParser::AddKey(const Key &key) { m_structure.AddKey(key); }
 void ArgumentsParser::DisplayHelp() {
   std::cout << m_structure.HelpMessage(m_name, m_version) << std::endl;
 }
 
 const Structure &
-ArgumentsParser::AddStructure(const std::string &structure_str) {\
+ArgumentsParser::AddStructure(const std::string &structure_str) {
   m_structure.Parse(structure_str);
   _UpdateParserMap();
   return m_structure;
 }
 
-const Structure &ArgumentsParser::ClearStructure() {\
+const Structure &ArgumentsParser::ClearStructure() {
   for (auto &item : m_structure) {
     delete item;
   }
@@ -123,14 +123,18 @@ bool ArgumentsParser::Contains(const std::string &key,
 } // namespace GArgs
 
 int GetAmountOfValues(const std::string &argument_value) {
-  int i = 0;
-  int values = 0;
+  int i = 1;
+  int values = 1;
 
   while (i > 0) {
     i = argument_value.find(9, i);
     if (i > 0) {
       values++;
     }
+  }
+
+  if (argument_value == "") {
+    values = 0;
   }
 
   return values;
