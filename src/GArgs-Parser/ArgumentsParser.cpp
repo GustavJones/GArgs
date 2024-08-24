@@ -121,7 +121,7 @@ bool ArgumentsParser::Contains(const std::string &key,
 
 int GetAmountOfValues(const std::string &argument_value) {
   int i = 1;
-  int values = 1;
+  int values = 0;
 
   while (i > 0) {
     i = argument_value.find(9, i + 1);
