@@ -63,9 +63,12 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
         argument = argv[i];
       }
 
-      if (arg->value[arg->value.length() - 1] == 9) {
-        arg->value.erase(arg->value.length() - 1, 1);
+      if (arg->value != "") {
+        if (arg->value[arg->value.length() - 1] == 9) {
+          arg->value.erase(arg->value.length() - 1, 1);
+        }
       }
+
     } else {
 
       if (i >= argc) {
@@ -84,8 +87,10 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
         argument = argv[i];
       }
 
-      if (arg->value[arg->value.length() - 1] == 9) {
-        arg->value.erase(arg->value.length() - 1, 1);
+      if (arg->value != "") {
+        if (arg->value[arg->value.length() - 1] == 9) {
+          arg->value.erase(arg->value.length() - 1, 1);
+        }
       }
     }
   }
