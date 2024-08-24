@@ -124,7 +124,7 @@ int GetAmountOfValues(const std::string &argument_value) {
   int values = 1;
 
   while (i > 0) {
-    i = argument_value.find(9, i);
+    i = argument_value.find(9, i + 1);
     if (i > 0) {
       values++;
     }
