@@ -53,14 +53,13 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
 
     if (arg->valueAmount == 0) {
       while (argument.find(arg->argumentFilter) == 0) {
-        if (arg->value != "") {
-          arg->value += 9;
-        }
-
-        arg->value += argument;
+        arg->value += argument + (char)9;
         i++;
 
         if (i >= argc) {
+          if (arg->value[arg->value.length() - 1] == 9) {
+            arg->value.erase(arg->value.length() - 1, 1);
+          }
           break;
         }
 
@@ -74,15 +73,13 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
       argument = argv[i];
 
       while (GetAmountOfValues(arg->value) < arg->valueAmount) {
-        if (arg->value != "") {
-          arg->value += 9;
-        }
-
-        arg->value += argument;
-
+        arg->value += argument + (char)9;
         i++;
 
         if (i >= argc) {
+          if (arg->value[arg->value.length() - 1] == 9) {
+            arg->value.erase(arg->value.length() - 1, 1);
+          }
           break;
         }
 
