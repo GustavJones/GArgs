@@ -3,8 +3,6 @@
 #include "GArgs-Help/Argument.hpp"
 #include <iostream>
 
-int GetAmountOfValues(const std::string &argument_value);
-
 namespace GArgs {
 ArgumentsParser::ArgumentsParser(const std::string &program_title,
                                  const std::string &version,
@@ -53,7 +51,7 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
 
     if (arg->valueAmount == 0) {
       while (argument.find(arg->argumentFilter) == 0) {
-        arg->value += argument + (char)9;
+        arg->values.push_back(argument);
         i++;
 
         if (i >= argc) {
@@ -62,13 +60,6 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
 
         argument = argv[i];
       }
-
-      if (arg->value != "") {
-        if (arg->value[arg->value.length() - 1] == 9) {
-          arg->value.erase(arg->value.length() - 1, 1);
-        }
-      }
-
     } else {
 
       if (i >= argc) {
@@ -76,8 +67,8 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
       }
       argument = argv[i];
 
-      while (GetAmountOfValues(arg->value) < arg->valueAmount) {
-        arg->value += argument + (char)9;
+      while (arg->values.size() < arg->valueAmount) {
+        arg->values.push_back(argument);
         i++;
 
         if (i >= argc) {
@@ -85,12 +76,6 @@ void ArgumentsParser::ParseArgs(int argc, char *argv[]) {
         }
 
         argument = argv[i];
-      }
-
-      if (arg->value != "") {
-        if (arg->value[arg->value.length() - 1] == 9) {
-          arg->value.erase(arg->value.length() - 1, 1);
-        }
       }
     }
   }
@@ -103,43 +88,20 @@ void ArgumentsParser::_UpdateParserMap() {
 
   this->clear();
   for (const auto &arg : m_structure) {
-    (*this)[arg->name] = arg->value;
+    (*this)[arg->name] = arg->values;
   }
 }
 
 bool ArgumentsParser::Contains(const std::string &key,
                                const std::string &value) {
-  int pos;
-  std::string readValue = (*this)[key];
+  bool found = false;
+  std::vector values = (*this)[key];
 
-  if (readValue.length() > 0) {
-    pos = readValue.find(value);
-
-    if (pos >= 0 && pos < readValue.length()) {
-      return true;
-    } else {
-      return false;
+  for (const auto &v : values) {
+    if (v == value) {
+      found = true;
     }
-  } else {
-    return false;
   }
+  return found;
 }
 } // namespace GArgs
-
-int GetAmountOfValues(const std::string &argument_value) {
-  int i = 1;
-  int values = 0;
-
-  while (i > 0) {
-    i = argument_value.find(9, i + 1);
-    if (i > 0) {
-      values++;
-    }
-  }
-
-  if (argument_value == "") {
-    values = 0;
-  }
-
-  return values;
-}

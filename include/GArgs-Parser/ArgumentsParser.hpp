@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace GArgs {
-class ArgumentsParser : public std::map<std::string, std::string> {
+class ArgumentsParser : public std::map<std::string, std::vector<std::string>> {
 public:
   ArgumentsParser(const std::string &program_title, const std::string &version,
                   const bool &allow_relative_path = false);

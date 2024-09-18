@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace GArgs {
 
@@ -16,7 +17,7 @@ public:
 
   std::string name;
   std::string help;
-  std::string value;
+  std::vector<std::string> values;
   std::string argumentFilter;
   unsigned int valueAmount;
 
