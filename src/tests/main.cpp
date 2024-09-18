@@ -14,7 +14,9 @@ int main(int argc, char *argv[]) {
 
     parser.ParseArgs(argc, argv);
 
-    std::cout << parser["flags"] << std::endl;
+    for (const auto &flag : parser["flags"]) {
+      std::cout << flag << std::endl;
+    }
 
     if (parser.Contains("argument1", "help")) {
       parser.DisplayHelp();
