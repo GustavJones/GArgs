@@ -95,7 +95,7 @@ void ArgumentsParser::_UpdateParserMap() {
 bool ArgumentsParser::Contains(const std::string &key,
                                const std::string &value) {
   bool found = false;
-  std::vector values = (*this)[key];
+  std::vector<std::string> values = (*this)[key];
 
   for (const auto &v : values) {
     if (v == value) {
