@@ -98,7 +98,7 @@ bool ArgumentsParser::Contains(const std::string &key,
   std::vector<std::string> values = (*this)[key];
 
   for (const auto &v : values) {
-    if (v == value) {
+    if (v.find(value) != v.npos) {
       found = true;
     }
   }
