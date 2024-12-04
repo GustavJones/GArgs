@@ -21,9 +21,9 @@ public:
   const Structure &ClearStructure();
 
   void ParseArgs(int argc, char *argv[]);
-  void DisplayHelp();
+  void DisplayHelp() const;
   void AddKey(const Key &key);
-  bool Contains(const std::string &key, const std::string &value);
+  bool Contains(const std::string &key, const std::string &value) const;
 
 private:
   Structure m_structure;

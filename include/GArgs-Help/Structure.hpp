@@ -15,7 +15,8 @@ public:
   ~Structure();
 
   void Parse(const std::string &structure_str);
-  std::string HelpMessage(const std::string &title, const std::string &version);
+  std::string HelpMessage(const std::string &title,
+                          const std::string &version) const;
 
   void AddKey(const Key &key);
 

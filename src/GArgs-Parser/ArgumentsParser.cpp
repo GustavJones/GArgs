@@ -13,7 +13,7 @@ ArgumentsParser::ArgumentsParser(const std::string &program_title,
 ArgumentsParser::~ArgumentsParser() {}
 
 void ArgumentsParser::AddKey(const Key &key) { m_structure.AddKey(key); }
-void ArgumentsParser::DisplayHelp() {
+void ArgumentsParser::DisplayHelp() const {
   std::cout << m_structure.HelpMessage(m_name, m_version) << std::endl;
 }
 
@@ -93,9 +93,14 @@ void ArgumentsParser::_UpdateParserMap() {
 }
 
 bool ArgumentsParser::Contains(const std::string &key,
-                               const std::string &value) {
+                               const std::string &value) const {
+  std::vector<std::string> values;
   bool found = false;
-  std::vector<std::string> values = (*this)[key];
+  for(const auto &k : (*this)) {
+    if (key == k.first) {
+      values = k.second;     
+    }
+  }
 
   for (const auto &v : values) {
     if (v.find(value) != v.npos) {

@@ -43,7 +43,7 @@ void Structure::Parse(const std::string &structure_str) {
 }
 
 std::string Structure::HelpMessage(const std::string &title,
-                                   const std::string &version) {
+                                   const std::string &version) const {
   std::string output;
 
   output += title + ' ' + version + '\n';
