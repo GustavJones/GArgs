@@ -1,28 +1,32 @@
-#include "GArgs/GArgs.hpp"
+#include "GArgs/Parser.hpp"
+#include "GArgs/Version.hpp"
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  GArgs::Parser parser("Parser", "V1.0", true);
-  try {
-    parser.AddStructure("[flags:help=Flags,value_amount=0,argument_filter=--;"
-                        "argument1:help=The First "
-                        "Argument;argument2:help=The "
-                        "Second Argument]");
+  // Create a parser object
+  GArgs::Parser parser("Program Name", GArgs::Version<size_t>{1, 0, 0});
 
-    parser.AddKey(GArgs::Key("flags", "help", "Prints This message"));
-    parser.AddKey(GArgs::Key("argument1", "run", "Runs a file"));
+  // Create an argument slot
+  // Contructor takes: slot name, decription, filter, required amount, max amount (0 for infinite)
+  GArgs::ArgumentSlot slot("flags", "Slot decription", "--", 0, 0);
 
-    parser.ParseArgs(argc, argv);
+  // Add a key to display in help message
+  slot.AddKey(GArgs::ArgumentKey("--help"));
 
-    for (const auto &flag : parser["flags"]) {
-      std::cout << flag << std::endl;
-    }
+  parser.AddSlot(slot);
 
-    if (parser.Contains("argument1", "help")) {
-      parser.DisplayHelp();
-    }
-  } catch (const GArgs::ArgumentsException &e) {
-    std::cerr << "Error: " << e.what() << std::endl;
+  parser.Parse(argc, argv);
+
+  // Check if argument value is contained in a slot
+  if (parser["flags"].Has("--help")) {
+    std::cout << parser.Help() << std::endl;
+    return 0;
   }
+
+  // Print arguments in flag slot
+  for (size_t __valuesIndex = 0; __valuesIndex < parser["flags"].Size(); __valuesIndex++) {
+    std::cout << parser["flags"][__valuesIndex] << std::endl;
+  }
+
   return 0;
 }

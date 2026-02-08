@@ -1,71 +1,48 @@
 # GArgs
 
-## How To Use:
+## Table of content
+1. [Description](#description)
+2. [Installation](#installation)
+3. [Usage](#usage)
 
-1. Define a structure
-2. Add flag options and commands
-3. Get values of arguments
+## Description
 
-## Structure
+This is a simple C++ library to add a low level of command line argument parsing.
+It seperates arguments into slots with filters and amounts.
 
-To add a structure, use `void add_structure(const std::string &structure_str)` method to add the implied structure
+## Installation
 
----
-
-## Template
-
-`.add_structure("[argument_name1:property1=value,property2=value,property3=value;argument_name2:property1=value,property2=value]")`
-
-## Properties
-
-`help`:
-
-The help string for argument position
-
-default: ""
-
-- Any String
-
-`value_amount`:
-
-Amount of arguments for the group
-
-- unsigned integer
-- default=1
-- for infinate arguments use 0 (must also set argument_filter)
-
-`argument_filter`:
-
-Set the filter of what characters the argument value must begin with
-
-- String
-- Default=Unset
-- Set "--" for flag filter
-
-`required`:
-NOT IMPLEMENTED
-Sets the priority of the argument
-
-- Bool
-- Default=true
+Clone this repo to your project or setup a git submodule.
+Include this project to your cmake config with `add_subdirectory`.
+Link the library to your project with the name `GArgs`.
+[Example](src/tests/CMakeLists.txt)
 
 ## Usage
 
-```cpp
-    #include "GArgs.hpp"
+```c++
+  // Create a parser object
+  GArgs::Parser parser("Program Name", GArgs::Version<size_t>{1, 0, 0});
 
-    GArgs::Parser parser("ApplicationName", "V1.0"); // ArgumentParser can also be used
-    parser.AddStructure("[argument1:help=Arg 1;argument2:help=Arg 2]");
+  // Create an argument slot
+  // Contructor takes: slot name, decription, filter, required amount, max amount (0 for infinite)
+  GArgs::ArgumentSlot slot("flags", "Slot decription", "--", 0, 0);
 
-    parser.AddKey(GArgs::Key("argument1", "help", "Prints This message"));
-    parser.AddKey(GArgs::Key("argument2", "*", "Runs a file"));
+  // Add a key to display in help message
+  slot.AddKey(GArgs::ArgumentKey("--help"));
 
-    parser.ParseArgs(argc, argv);
+  parser.AddSlot(slot);
 
-    std::cout << parser["argument2"] << std::endl;
+  parser.Parse(argc, argv);
 
-    if (parser.Contains("argument1", "help")) {
-      parser.DisplayHelp();
-    }
+  // Check if argument value is contained in a slot
+  if (parser["flags"].Has("--help")) {
+    std::cout << parser.Help() << std::endl;
+    return 0;
+  }
+
+  // Print arguments in flag slot
+  for (size_t __valuesIndex = 0; __valuesIndex < parser["flags"].Size(); __valuesIndex++) {
+    std::cout << parser["flags"][__valuesIndex] << std::endl;
+  }
 
 ```
