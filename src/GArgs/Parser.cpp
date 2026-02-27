@@ -43,17 +43,15 @@ std::string Parser::Help() {
 
   for (size_t __slotIndex = 0; __slotIndex < m_slots.size(); __slotIndex++) {
     const auto &slot = m_slots[__slotIndex];
-    out += slot.GetName() + ":\n";
-    out += "Description: " + slot.GetDescription() + "\n";
-    out += "Filter: '" + slot.GetFilter() + "'\n";
+    out += slot.GetName() + ": " + slot.GetDescription() + " | ['" + slot.GetFilter() + "'] | ";
 
     if (slot.GetMaxAmount() == 0) {
-      out += "Max Amount: infinity\n";
+      out += "Max: infinity | ";
     } else {
-      out += "Max Amount: " + std::to_string(slot.GetMaxAmount()) + "\n";
+      out += "Max: " + std::to_string(slot.GetMaxAmount()) + " | ";
     }
     out +=
-        "Required Amount: " + std::to_string(slot.GetRequiredAmount()) + "\n\n";
+        "Required: " + std::to_string(slot.GetRequiredAmount()) + "\n";
     out += "Keys: \n";
 
     for (size_t __argIndex = 0; __argIndex < slot.GetArguments().Size(); __argIndex++) {
@@ -61,7 +59,7 @@ std::string Parser::Help() {
       out += "   " + (std::string)arg + "\n";
     }
 
-    out += "...\n\n";
+    out += "\n";
   }
 
   return out;
